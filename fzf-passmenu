@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+pushd "${PASSWORD_STORE_DIR:-$HOME/.password-store}"
+PASSFILE=`fd -t file -e gpg --color=always \
+	| sed 's/\.gpg//; s/^\.\///' | fzf --ansi`
+popd
+
+[ -z "$PASSFILE" ] && exit 0
+
+pass $1 -c $PASSFILE 1>/dev/null
